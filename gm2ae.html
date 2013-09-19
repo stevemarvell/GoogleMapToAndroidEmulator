@@ -1,11 +1,8 @@
 <!DOCTYPE html>
 <html>
 <head>
-<title>Telnet to Android Emulator</title>
+<title>Google Map to Android Emulator</title>
 <style>
-#config {
-	display: none;
-}
 
 h2 {
 	padding: 0;
@@ -16,10 +13,6 @@ h2 {
 	border: 2px groove rgb(240, 240, 240);
 	padding: 5px;
 	margin: 5px;
-}
-
-#log {
-	font-family: fixed;
 }
 
 #messages {
@@ -38,23 +31,10 @@ h2 {
 
 <body>
 	<h1>Google Map to Android Emulator</h1>
-	<!-- 	<div id="config" class="bordered">
-		<h2>Connection</h2>
-		URI
-		<input id="wsuri" size="40" value="ws://localhost:5554" />
-		<button id="connect">connect</button>
-		<button id="disconnect" disabled="disabled">disconnect</button>
-	</div>
- -->
+
 	<div id="map" class="bordered">
 		<h2>Map</h2>
 		<div id="map_canvas" style="padding: 5px; height: 380px;"></div>
-	</div>
-
-	<div id="log" class="bordered" style="display: none">
-		<h2>Log</h2>
-		<ul id="messages">
-		</ul>
 	</div>
 
 	<div id="console" class="bordered">
@@ -66,9 +46,6 @@ h2 {
 		</object>
 	</div>
 	<script>
-		function log(message) {
-			$('#messages').append('<li>' + message + '</li>');
-		}
 
 		var mapOptions = {
 			zoom : 8,
@@ -78,10 +55,8 @@ h2 {
 
 		$(document).ready(
 				function() {
-
-					log('hello');
 					
-					var bridge = $('#bridge').get(0);
+					var bridge = $('#bridge').get(0); // odd, but true
 
 					$('#map_canvas').gmap(mapOptions).on('init',
 							function(event, themap) {
