@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Telnet to Android Emulator</title>
+<style>
+#config {
+	display: none;
+}
+
+h2 {
+	padding: 0;
+	margin: 0;
+}
+
+.bordered {
+	border: 2px groove rgb(240, 240, 240);
+	padding: 5px;
+	margin: 5px;
+}
+
+#log {
+	font-family: fixed;
+}
+
+#messages {
+	list-style: none;
+}
+
+#messages li {
+	padding: 0;
+	margin: 0;
+}
+</style>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script src="https://maps.googleapis.com/maps/api/js?v=3.exp&sensor=false"></script>
+<script src="jquery.ui.map.full.min.js"></script>
+</head>
+
+<body>
+	<h1>Google Map to Android Emulator</h1>
+	<!-- 	<div id="config" class="bordered">
+		<h2>Connection</h2>
+		URI
+		<input id="wsuri" size="40" value="ws://localhost:5554" />
+		<button id="connect">connect</button>
+		<button id="disconnect" disabled="disabled">disconnect</button>
+	</div>
+ -->
+	<div id="map" class="bordered">
+		<h2>Map</h2>
+		<div id="map_canvas" style="padding: 5px; height: 380px;"></div>
+	</div>
+
+	<div id="log" class="bordered" style="display: none">
+		<h2>Log</h2>
+		<ul id="messages">
+		</ul>
+	</div>
+
+	<div id="console" class="bordered">
+		<h2>Console</h2>
+		<object id="bridge" name="TelnetBridge" type="application/x-java-applet" height="350" width="600">
+			<param name="code" value="TelnetBridge.class" />
+			<param name="archive" value="commons-net-3.3.jar" />
+			Applet failed to run. No Java plug-in was found.
+		</object>
+	</div>
+	<script>
+		function log(message) {
+			$('#messages').append('<li>' + message + '</li>');
+		}
+
+		var mapOptions = {
+			zoom : 8,
+			center : new google.maps.LatLng(-34.397, 150.644),
+			mapTypeId : google.maps.MapTypeId.ROADMAP
+		};
+
+		$(document).ready(
+				function() {
+
+					log('hello');
+					
+					var bridge = $('#bridge').get(0);
+
+					$('#map_canvas').gmap(mapOptions).on('init',
+							function(event, themap) {
+
+								var self = this;
+
+								$(themap).click(function(event) {
+									$(self).gmap('addMarker', {
+										position : event.latLng
+									});
+									
+									var lat = event.latLng.lat();
+									var lng = event.latLng.lng();
+									
+									bridge.command('geo fix '+lng+' '+lat);
+								});
+							});
+				});
+	</script>
+</body>
+</html>
